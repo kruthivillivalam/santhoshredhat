@@ -6,13 +6,14 @@ import { isArray } from 'util';
 
 class App extends Component {
 
+/*======================================================IGNORE=====================================================================*/ 
   /*constructor(props){
     super.props()
     this.crawl = this.crawl.bind(this)
   }*/
 
 
-  iterateobj1 = (obj,keyname) => {
+ /*iterateobj1 = (obj,keyname) => {
     if(isArray(obj)){
       var values = obj
       for(var i in values){
@@ -57,9 +58,89 @@ class App extends Component {
     }
    
   }
-  
+
+  iterateobj2 = (obj) => {
+    for(var keys in obj){
+      var ul = document.getElementById("list")
+      //ul.setAttribute('id',obj[keys])
+      if(obj[keys]!== null){
+        var objnew = obj[keys]
+        for(var key2 in objnew){
+          var li = document.createElement("li")
+          li.setAttribute('id',objnew[key2]);
+          li.appendChild(document.createTextNode(Object.keys(objnew[key2])));
+          ul.appendChild(li);   
+          this.iterateobj2(objnew[key2])
+        }
+               
+
+      }
+      
+    }
+
+  } */
+
+   /*======================================================IGNORE=====================================================================*/ 
+    createHTML = (json, isArray) => {
+   
+    var html = '<ul>';
+    for(var key in json){
+        if(typeof json[key] == 'object'){
+            
+            html += '<li>' + (!isArray ? '<strong>'+ key +'</strong>' : '') + '</li>' + this.createHTML(json[key], (json[key] instanceof Array ? 1 : 0));
+        } else {
+            html += '<li>'+ json[key] +'</li>';
+        }
+    }
+    return html+'</ul>';
+ 
+ }
+
+
   crawl =() => {
-    var url = document.getElementById("url").value
+
+    
+    var data = [
+      "/org/openbmc/examples/path0/PythonObj",
+      "/org/openbmc/UserManager/Group",
+      "/org/openbmc/HostIpmi/1",
+      "/org/openbmc/HostServices",
+      "/org/openbmc/UserManager/Users",
+      "/org/openbmc/records/events",
+      "/org/openbmc/examples/path1/SDBusObj",
+      "/org/openbmc/UserManager/User",
+      "/org/openbmc/examples/path0/SDBusObj",
+      "/org/openbmc/examples/path1/PythonObj",
+      "/org/openbmc/UserManager/Groups",
+      "/org/openbmc/NetworkManager/Interface"
+     ];
+     
+     var output = {};
+     var current;
+     
+     for(var a=0; a<data.length; a++) {
+       var s = data[a].split('/');
+       console.log("S is==="+s)
+       current = output;
+       for(var i=0; i<s.length; i++) {
+         console.log("S[i]=="+s[i])
+         if(s[i] != '') {
+           console.log("current[s[i]]==="+JSON.stringify(current[s[i]]))
+           if(current[s[i]] == null) current[s[i]] = {};
+           current = current[s[i]];
+           console.log("CUrrent & output==="+JSON.stringify(current)+",,,,,,,,,,,,,,,,,,"+JSON.stringify(output))
+          
+         }
+       }
+     }
+     document.getElementById('list').innerHTML = this.createHTML(output, false);
+     //this.iterateobj2(output)
+     
+     console.log("Output======================================"+JSON.stringify(output));
+    
+
+   /*======================================================IGNORE=====================================================================*/ 
+    /*var url = document.getElementById("url").value
     var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
     if (!re.test(url)) { 
         alert("url error");
@@ -83,15 +164,14 @@ class App extends Component {
         
         for(var key1 in json){
 
-         this.iterateobj1(json[key1])
+        // this.iterateobj1(json[key1])
          
         }
       
-    })
+    }) */
 }
- crawl1 = () => {
-     this.props.history.push('/crawl')
- }
+
+ /*======================================================IGNORE=====================================================================*/ 
   render() {
    
     return (
