@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import {Button} from 'react-bootstrap'
 import { isArray } from 'util';
+import axios from 'axios'
 
 class App extends Component {
 
@@ -108,15 +109,13 @@ class App extends Component {
     var send_data={
       "url":url
     }
-    fetch("http://localhost:5000/api",{method:"POST",
-    headers: {
-      "Content-Type": "application/json",
-      // "Content-Type": "application/x-www-form-urlencoded",
-  },
-body:JSON.stringify(send_data)})
+    axios.post("http://localhost:5000/sitemap",{
+      "url":url
+     })
   .then(response => {
-    var res = response.json();
-    console.log("Res received===="+JSON.stringify(res))
+  
+    console.log("Res received===="+JSON.stringify(response))
+    var res = JSON.stringify(response)
 
     var data = res;
      
@@ -144,8 +143,7 @@ body:JSON.stringify(send_data)})
      console.log("Output======================================"+JSON.stringify(output));
   })
     
-   
-    
+  }
 
    /*======================================================IGNORE=====================================================================*/ 
     /*var url = document.getElementById("url").value
@@ -177,7 +175,7 @@ body:JSON.stringify(send_data)})
         }
       
     }) */
-}
+
 
  /*======================================================IGNORE=====================================================================*/ 
   render() {
