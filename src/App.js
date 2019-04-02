@@ -98,22 +98,27 @@ class App extends Component {
 
 
   crawl =() => {
+    var url = document.getElementById("url").value
+    var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+    if (!re.test(url)) { 
+        alert("url error");
+        return false;
+    }
 
-    
-    var data = [
-      "/org/openbmc/examples/path0/PythonObj",
-      "/org/openbmc/UserManager/Group",
-      "/org/openbmc/HostIpmi/1",
-      "/org/openbmc/HostServices",
-      "/org/openbmc/UserManager/Users",
-      "/org/openbmc/records/events",
-      "/org/openbmc/examples/path1/SDBusObj",
-      "/org/openbmc/UserManager/User",
-      "/org/openbmc/examples/path0/SDBusObj",
-      "/org/openbmc/examples/path1/PythonObj",
-      "/org/openbmc/UserManager/Groups",
-      "/org/openbmc/NetworkManager/Interface"
-     ];
+    var send_data={
+      "url":url
+    }
+    fetch("http://localhost:5000/api",{method:"POST",
+    headers: {
+      "Content-Type": "application/json",
+      // "Content-Type": "application/x-www-form-urlencoded",
+  },
+body:JSON.stringify(send_data)})
+  .then(response => {
+    var res = response.json();
+    console.log("Res received===="+JSON.stringify(res))
+
+    var data = res;
      
      var output = {};
      var current;
@@ -137,6 +142,9 @@ class App extends Component {
      //this.iterateobj2(output)
      
      console.log("Output======================================"+JSON.stringify(output));
+  })
+    
+   
     
 
    /*======================================================IGNORE=====================================================================*/ 
